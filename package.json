@@ -50,6 +50,7 @@
     "etag": "^1.8.1",
     "express": "^4.19.2",
     "express-async-errors": "^3.1.1",
+    "express-async-handler": "^1.2.0",
     "fill-range": "^7.0.1",
     "finalhandler": "^1.2.0",
     "forwarded": "^0.2.0",
