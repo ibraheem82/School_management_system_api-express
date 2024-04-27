@@ -13,4 +13,13 @@ const globalErrHandler = (err, req, res, next) => {
     });
 }
 
-module.exports = globalErrHandler
+// Not found middleware
+/* *
+* function is designed to handle situations where a requested resource (URL) is not found on the server. It essentially creates a custom error object and passes it on to the next middleware in the chain,
+*/
+const notFoundErr = (req, res, next) => {
+    const err = new Error(`Can't find ${req.originalUrl} on the server.💣`);
+    next(err);
+};
+
+module.exports = globalErrHandler;
