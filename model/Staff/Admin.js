@@ -47,7 +47,7 @@ adminSchema.pre('save', async function (next){
   }
   // salting
   const salt = await bcrypt.genSalt(12)
-  this.password = await bcrypt.hash(password, salt)
+  this.password = await bcrypt.hash(this.password, salt)
   next();
 })
 
