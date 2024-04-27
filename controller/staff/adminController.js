@@ -1,15 +1,17 @@
-const AsyncHandler = require("express-async-handler");
+const AsyncHandler = require("express-async-handler"); //  package. This middleware helps handle asynchronous errors in Express routes more cleanly
 const Admin = require("../../model/Staff/Admin");
 
 // @desc Register admin
 // @route POST /api/v1/admins/register
 // @access Private
+
+// It's wrapped in AsyncHandler to handle potential asynchronous errors within the function.
 exports.registerAdminCtrl = AsyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
         // Check if email exists
         const adminFound = await Admin.findOne({email});
         if(adminFound){
-            res.json('admin exists');
+            throw new Error('admin exists');
         }
 
         // * Register
@@ -21,11 +23,6 @@ exports.registerAdminCtrl = AsyncHandler(async (req, res) => {
         res.status(201).json({
             status: 'success',
             data : user
-        });
-
-        res.json({
-            status: 'failed',
-            error : error.message,
         });
 });
 
