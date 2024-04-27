@@ -1,4 +1,7 @@
 const http = require('http'); // This line imports the built-in http module from Node.js. This module provides functionalities for creating HTTP servers and clients, which are essential for building web applications.
+
+require('./config/dbConnect')
+
 const app = require('./app/app');
 
 
