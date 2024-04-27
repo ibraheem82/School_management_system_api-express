@@ -6,6 +6,7 @@ const app = express();
 
 // ----- MIDDLEWARES -----
 app.use(morgan('dev'));
+app.use(express.json()); // This allows the application to parse incoming JSON data in request bodies.
 
 
 // ** Routes ** //
