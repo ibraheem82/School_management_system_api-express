@@ -1,5 +1,5 @@
 const express = require("express");
-const globalErrHandler = require("../middlewares/globalErrHandler");
+const {globalErrHandler, notFoundErr} = require("../middlewares/globalErrHandler");
 // const morgan = require("morgan");
 const adminRouter = require("../routes/staff/adminRouter");
 
@@ -18,6 +18,7 @@ app.use('/api/v1/admins', adminRouter); // app.use accept any http methods, HTTP
 
 
 // ** -- Error Middlewares --
+app.use(notFoundErr)
 app.use(globalErrHandler);
 
 module.exports = app
