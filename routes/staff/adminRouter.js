@@ -12,7 +12,7 @@ adminRouter.post("/login", loginAdminCtrl)
 
 
 // Get all
-adminRouter.get("/", getAdminsCtrl );
+adminRouter.get("/", isLogin, getAdminsCtrl);
 
 //  single
 adminRouter.get("/profile", isLogin, getAdminProfileCtrl)
