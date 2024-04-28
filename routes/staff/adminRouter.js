@@ -15,7 +15,7 @@ adminRouter.post("/login", loginAdminCtrl)
 adminRouter.get("/", getAdminsCtrl );
 
 //  single
-adminRouter.get("/", isLogin, getAdminProfileCtrl)
+adminRouter.get("/profile", isLogin, getAdminProfileCtrl)
 
 
 // Upate admin
