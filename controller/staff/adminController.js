@@ -1,7 +1,6 @@
 const AsyncHandler = require("express-async-handler"); //  package. This middleware helps handle asynchronous errors in Express routes more cleanly
 const Admin = require("../../model/Staff/Admin");
 const generateToken = require("../../utils/generateToken");
-const verifyToken = require("../../utils/verifyToken");
 
 // @desc Register admin
 // @route POST /api/v1/admins/register
@@ -24,7 +23,8 @@ exports.registerAdminCtrl = AsyncHandler(async (req, res) => {
         });
         res.status(201).json({
             status: 'success',
-            data : user
+            data : user,
+            Message: "Admin registered successfully",
         });
 });
 
@@ -48,14 +48,10 @@ exports.loginAdminCtrl =  AsyncHandler(async (req, res) => {
         }
                 // .verifyPassword()  is a method in the model that is verifying passwords of user.
         if(user && (await user.verifyPassword(password))){
-            const token = generateToken(user._id) // generating the token for the user base on thier id's
-        
-            const verify = verifyToken(token)
             return res.json({
                 data: generateToken(user._id), // generating the token for the user base on thier id's
-                user, 
-                verify
-            })
+                message: "Admin logged in successfully",
+            });
         }else{
             return res.json({
                 message: "Invalid login credentials."
@@ -88,20 +84,18 @@ exports.getAdminsCtrl = (req, res) => {
 // @desc  Get single admin
 // @route GET /api/v1/admins/:id
 // @access Private
-exports.getAdminCtrl = (req, res) => {
-    try {
-        res.status(201).json({
+exports.getAdminProfileCtrl = AsyncHandler( async (req, res) => {
+    const admin = await Admin.findById(req.userAuth._id).select('-password -createdAt -updatedAt')
+    if(!admin){
+        throw new Error("Admin not found")
+    } else{
+        res.status(200).json({
             status: 'success',
-            data : 'Single admin'
-        });
-    } catch (error) {
-        res.json({
-            status: 'failed',
-            error : error.message,
-
-        });
+            data : admin
+        })
     }
-};
+    
+})
 
 
 // @desc   update admin
