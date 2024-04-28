@@ -2,7 +2,7 @@ const AsyncHandler = require("express-async-handler"); //  package. This middlew
 const bcrypt = require("bcryptjs");
 const Admin = require("../../model/Staff/Admin");
 const generateToken = require("../../utils/generateToken");
-
+const { hashPassword, isPassMatched } = require("../../utils/helpers");
 // @desc Register admin
 // @route POST /api/v1/admins/register
 // @access Private
