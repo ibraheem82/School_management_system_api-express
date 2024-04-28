@@ -1,5 +1,6 @@
 const AsyncHandler = require("express-async-handler"); //  package. This middleware helps handle asynchronous errors in Express routes more cleanly
 const Admin = require("../../model/Staff/Admin");
+const generateToken = require("../../utils/generateToken");
 
 // @desc Register admin
 // @route POST /api/v1/admins/register
@@ -31,9 +32,9 @@ exports.registerAdminCtrl = AsyncHandler(async (req, res) => {
 // @desc login admin
 // @route POST /api/v1/admins/login
 // @access Private
-exports.loginAdminCtrl =  async (req, res) => {
+exports.loginAdminCtrl =  AsyncHandler(async (req, res) => {
     const { email, password } = req.body;
-    try {
+
         // find user
         const user = await Admin.findOne({
             email
@@ -49,7 +50,7 @@ exports.loginAdminCtrl =  async (req, res) => {
             // * save user into the req object
             req.userAuth = user; // 
             return res.json({
-                data: user
+                data: generateToken(user._id)// generating the token for the user base on thier id's
             })
         }else{
             return res.json({
@@ -57,15 +58,7 @@ exports.loginAdminCtrl =  async (req, res) => {
             });
         }
 
-    } catch (error) {
-        res.json({
-            status: 'failed',
-            error : error.message,
-
-        })
-    }
-
-};
+});
 
 
 // @desc  Get all admins
