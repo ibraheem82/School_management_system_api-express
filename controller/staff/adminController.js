@@ -40,7 +40,6 @@ exports.registerAdminCtrl = AsyncHandler(async (req, res) => {
 // @access Private
 exports.loginAdminCtrl =  AsyncHandler(async (req, res) => {
     const { email, password } = req.body;
-
         // find user
         const user = await Admin.findOne({
             email
@@ -110,11 +109,32 @@ exports.updateAdminCtrl = AsyncHandler( async (req, res) => {
     const emailExist = await Admin.findOne({email})
     if(emailExist){
         throw new Error('This email is taken/exist');
-    } else {
+    }
+
+    const salt = await bcrypt.genSalt(12)
+    const passwordHashed = await bcrypt.hash(password, salt)
+
+    // ** Check if the user is updating password
+    if(password){
         // Update()
         const admin  = await Admin.findByIdAndUpdate(req.userAuth._id, {
             email,
-            password,
+            password : passwordHashed,
+            name,
+        },{
+            new:true,
+            runValidators : true,
+        });
+
+        res.status(200).json({
+            status: 'success ✅',
+            data : admin,
+            message: "Admin updated successfully.",
+        });
+    } else{
+        // Update()
+        const admin  = await Admin.findByIdAndUpdate(req.userAuth._id, {
+            email,
             name,
         },{
             new:true,
@@ -127,6 +147,7 @@ exports.updateAdminCtrl = AsyncHandler( async (req, res) => {
             message: "Admin updated successfully.",
         });
     }
+    
 });
 
 
