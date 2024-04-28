@@ -95,21 +95,30 @@ exports.getAdminProfileCtrl = AsyncHandler( async (req, res) => {
 // @desc   update admin
 // @route UPDATE /api/v1/admins/:id
 // @access Private
-exports.updateAdminCtrl =  (req, res) => {
-    try {
-        res.status(201).json({
-            status: 'success',
-            data : 'update admin'
+exports.updateAdminCtrl = AsyncHandler( async (req, res) => {
+    const {email, name, password} = req.body;
+    // * If email is taken
+    const emailExist = await Admin.findOne({email})
+    if(emailExist){
+        throw new Error('This email is taken/exist');
+    } else {
+        // Update()
+        const admin  = await Admin.findByIdAndUpdate(req.userAuth._id, {
+            email,
+            password,
+            name,
+        },{
+            new:true,
+            runValidators : true,
         });
-    } catch (error) {
-        res.json({
-            status: 'failed',
-            error : error.message,
 
-        })
+        res.status(200).json({
+            status: 'success ✅',
+            data : admin,
+            message: "Admin updated successfully.",
+        });
     }
-
-}
+});
 
 
 // @desc  Delete admin
@@ -126,9 +135,8 @@ exports.deleteAdminCtrl = (req, res) => {
             status: 'failed',
             error : error.message,
 
-        })
+        });
     }
-
 }
 
 
