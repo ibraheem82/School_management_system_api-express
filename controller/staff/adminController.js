@@ -44,8 +44,10 @@ exports.loginAdminCtrl =  async (req, res) => {
                 message: "Invalid login credentials."
             });
         }
-
+                // .verifyPassword()  is a method in the model that is verifying passwords of user.
         if(user && (await user.verifyPassword(password))){
+            // * save user into the req object
+            req.userAuth = user; // 
             return res.json({
                 data: user
             })
