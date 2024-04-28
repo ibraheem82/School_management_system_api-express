@@ -15,16 +15,12 @@ exports.registerAdminCtrl = AsyncHandler(async (req, res) => {
         if(adminFound){
             throw new Error('Admin exists ❌');
         }
-        // salting
-        // ** Hash Password.
-  const salt = await bcrypt.genSalt(12)
-  const passwordHashed = await bcrypt.hash(password, salt)
 
         // * Register
         const user = await Admin.create({
             name,
             email,
-            password : passwordHashed,
+            password : await hashPassword(password),
         });
         res.status(201).json({
             status: 'success ✅',
@@ -47,16 +43,15 @@ exports.loginAdminCtrl =  AsyncHandler(async (req, res) => {
 
         if(!user){
             return res.json({
-                message: "Invalid login credentials. ❌"
+                message: "Invalid login credentials. "
             });
         }
 
             // ** Verify Password ()
-            const isMatched = await bcrypt.compare(password, user.password)
-                // .verifyPassword()  is a method in the model that is verifying passwords of user.
+            const isMatched = await isPassMatched(password, user.password)
             if(!isMatched) {
                 return res.json({
-                    message: "Invalid login credentials. ❌"
+                    message: "Invalid login credentials. "
                 });
 
             }else{
@@ -64,8 +59,7 @@ exports.loginAdminCtrl =  AsyncHandler(async (req, res) => {
                     data: generateToken(user._id), // generating the token for the user base on thier id's
                     message: "Admin logged in successfully",
                 });
-
-            }
+     }
 });
 
 
@@ -111,15 +105,14 @@ exports.updateAdminCtrl = AsyncHandler( async (req, res) => {
         throw new Error('This email is taken/exist');
     }
 
-    const salt = await bcrypt.genSalt(12)
-    const passwordHashed = await bcrypt.hash(password, salt)
+   
 
     // ** Check if the user is updating password
     if(password){
         // Update()
         const admin  = await Admin.findByIdAndUpdate(req.userAuth._id, {
             email,
-            password : passwordHashed,
+            password : await hashPassword(password),
             name,
         },{
             new:true,
