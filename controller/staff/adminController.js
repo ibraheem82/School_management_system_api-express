@@ -1,4 +1,5 @@
 const AsyncHandler = require("express-async-handler"); //  package. This middleware helps handle asynchronous errors in Express routes more cleanly
+const bcrypt = require("bcryptjs");
 const Admin = require("../../model/Staff/Admin");
 const generateToken = require("../../utils/generateToken");
 
@@ -12,14 +13,18 @@ exports.registerAdminCtrl = AsyncHandler(async (req, res) => {
         // Check if email exists
         const adminFound = await Admin.findOne({email});
         if(adminFound){
-            throw new Error('admin exists ❌');
+            throw new Error('Admin exists ❌');
         }
+        // salting
+        // ** Hash Password.
+  const salt = await bcrypt.genSalt(12)
+  const passwordHashed = await bcrypt.hash(password, salt)
 
         // * Register
         const user = await Admin.create({
             name,
             email,
-            password,
+            password : passwordHashed,
         });
         res.status(201).json({
             status: 'success ✅',
@@ -46,18 +51,22 @@ exports.loginAdminCtrl =  AsyncHandler(async (req, res) => {
                 message: "Invalid login credentials. ❌"
             });
         }
-                // .verifyPassword()  is a method in the model that is verifying passwords of user.
-        if(user && (await user.verifyPassword(password))){
-            return res.json({
-                data: generateToken(user._id), // generating the token for the user base on thier id's
-                message: "Admin logged in successfully",
-            });
-        }else{
-            return res.json({
-                message: "Invalid login credentials."
-            });
-        }
 
+            // ** Verify Password ()
+            const isMatched = await bcrypt.compare(password, user.password)
+                // .verifyPassword()  is a method in the model that is verifying passwords of user.
+            if(!isMatched) {
+                return res.json({
+                    message: "Invalid login credentials. ❌"
+                });
+
+            }else{
+                return res.json({
+                    data: generateToken(user._id), // generating the token for the user base on thier id's
+                    message: "Admin logged in successfully",
+                });
+
+            }
 });
 
 
