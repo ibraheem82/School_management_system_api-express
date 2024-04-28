@@ -12,7 +12,7 @@ exports.registerAdminCtrl = AsyncHandler(async (req, res) => {
         // Check if email exists
         const adminFound = await Admin.findOne({email});
         if(adminFound){
-            throw new Error('admin exists');
+            throw new Error('admin exists ❌');
         }
 
         // * Register
@@ -22,7 +22,7 @@ exports.registerAdminCtrl = AsyncHandler(async (req, res) => {
             password,
         });
         res.status(201).json({
-            status: 'success',
+            status: 'success ✅',
             data : user,
             Message: "Admin registered successfully",
         });
@@ -43,7 +43,7 @@ exports.loginAdminCtrl =  AsyncHandler(async (req, res) => {
 
         if(!user){
             return res.json({
-                message: "Invalid login credentials."
+                message: "Invalid login credentials. ❌"
             });
         }
                 // .verifyPassword()  is a method in the model that is verifying passwords of user.
@@ -64,21 +64,14 @@ exports.loginAdminCtrl =  AsyncHandler(async (req, res) => {
 // @desc  Get all admins
 // @route GET /api/v1/admins/
 // @access Private
-exports.getAdminsCtrl = (req, res) => {
-    try {
-        res.status(201).json({
-            status: 'success',
-            data : 'All admins'
-        });
-    } catch (error) {
-        res.json({
-            status: 'failed',
-            error : error.message,
-
-        })
-    }
-
-}
+exports.getAdminsCtrl = AsyncHandler( async (req, res) => {
+  const admins = await Admin.find();
+  res.status(200).json({
+    status: 'success ✅',
+    message: 'Admin fetched successfully',
+    data: admins
+  });
+});
 
 
 // @desc  Get single admin
@@ -90,8 +83,9 @@ exports.getAdminProfileCtrl = AsyncHandler( async (req, res) => {
         throw new Error("Admin not found")
     } else{
         res.status(200).json({
-            status: 'success',
-            data : admin
+            status: 'success ✅',
+            data : admin,
+            message: "Admin profile fetched successfully."
         })
     }
     
