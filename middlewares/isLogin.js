@@ -4,7 +4,7 @@ const verifyToken = require("../utils/verifyToken");
 const isLogin = async (req, res, next)=> {
     // get token from header
     const headerObj = req.headers;
-    const token = headerObj.authorization.split(" ")[1];
+    const token = headerObj?.authorization?.split(" ")[1];
     const verifiedToken = verifyToken(token); // verify the token that is coming from the header, when it verifies it it also decodes it.
     // ** when u verify the token u might have something like this : { id: '662d1bb19c82035c275218af', iat: 1714299381, exp: 1715336181 }, as what is been decoded.
     if (verifiedToken){
