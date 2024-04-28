@@ -1,6 +1,7 @@
 const AsyncHandler = require("express-async-handler"); //  package. This middleware helps handle asynchronous errors in Express routes more cleanly
 const Admin = require("../../model/Staff/Admin");
 const generateToken = require("../../utils/generateToken");
+const verifyToken = require("../../utils/verifyToken");
 
 // @desc Register admin
 // @route POST /api/v1/admins/register
@@ -48,9 +49,16 @@ exports.loginAdminCtrl =  AsyncHandler(async (req, res) => {
                 // .verifyPassword()  is a method in the model that is verifying passwords of user.
         if(user && (await user.verifyPassword(password))){
             // * save user into the req object
-            req.userAuth = user; // 
+            // req.userAuth = user; // 
+
+            const token = generateToken(user._id) // generating the token for the user base on thier id's
+            if(token){
+            const verify = verifyToken(token)
+            }
             return res.json({
-                data: generateToken(user._id)// generating the token for the user base on thier id's
+                data: generateToken(user._id), // generating the token for the user base on thier id's
+                user, 
+                verify
             })
         }else{
             return res.json({
