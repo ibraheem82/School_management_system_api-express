@@ -41,3 +41,18 @@ exports.getAcademicYears = AsyncHandler(async (req, res) => {
         data : academicYears
     });
 });
+
+
+
+// @desc  Get Single Academic Years
+// @route GET  /api/v1/academic-years/:id
+// @access Private
+exports.getAcademicYear = AsyncHandler(async (req, res) => {
+
+    const academicYear = await AcademicYear.findById(req.params.id);
+    res.status(200).json({
+        status: 'Success',
+        message: "Academic years fetched successfully",
+        data : academicYear
+    });
+});
