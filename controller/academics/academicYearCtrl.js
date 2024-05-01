@@ -1,5 +1,10 @@
 const AsyncHandler = require("express-async-handler");
 const AcademicYear = require("../../model/Academic/AcademicYear")
+
+
+// @desc  Create Academic Year
+// @route POST  /api/v1/academic-years
+// @access Private
 exports.createAcademicYear = AsyncHandler(async (req, res) => {
     const {name, fromYear, toYear}  = req.body
 
@@ -19,5 +24,20 @@ exports.createAcademicYear = AsyncHandler(async (req, res) => {
         status: 'Success',
         message: "Academic year created successfully",
         data : academicYearCreated
+    });
+});
+
+
+
+// @desc  get ALl Academic Years
+// @route GET  /api/v1/academic-years
+// @access Private
+exports.getAcademicYears = AsyncHandler(async (req, res) => {
+
+    const academicYears = await AcademicYear.find();
+    res.status(200).json({
+        status: 'Success',
+        message: "Academic years fetched successfully",
+        data : academicYears
     });
 });
