@@ -26,7 +26,8 @@ exports.createAcademicYear = AsyncHandler(async (req, res) => {
 // The push method is used to add a new element to the end of the academicYears array.
 // The element being added is academicYearCreated._id, which is refers to the ID of a newly created academic year object. This ID is obtained from the academicYearCreated variable.
     const admin = await Admin.findById(req.userAuth._id);
-    admin.academicYears.push(academicYearCreated._id)
+    admin.academicYears.push(academicYearCreated._id);
+    await admin.save()
     res.status(201).json({
         status: 'Success',
         message: "Academic year created successfully",
