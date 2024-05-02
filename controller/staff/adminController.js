@@ -12,7 +12,7 @@ exports.registerAdminCtrl = AsyncHandler(async (req, res) => {
         // Check if email exists
         const adminFound = await Admin.findOne({email});
         if(adminFound){
-            throw new Error('Admin exists ❌');
+            throw new Error('Admin exists.');
         }
 
         // * Register
