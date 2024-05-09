@@ -10,9 +10,9 @@ const Admin = require("../../model/Staff/Admin");
 exports.createAcademicTerm = AsyncHandler(async (req, res) => {
     const {name, description, duration}  = req.body
 
-    const AcademicTerm = await AcademicTerm.findOne({name});
+    const academicTerm = await AcademicTerm.findOne({name});
 
-    if (AcademicTerm) {
+    if (academicTerm) {
         throw new Error("Academic year already exists");
     }
 
