@@ -13,7 +13,7 @@ exports.createAcademicTerm = AsyncHandler(async (req, res) => {
     const academicTerm = await AcademicTerm.findOne({name});
 
     if (academicTerm) {
-        throw new Error("Academic year already exists");
+        throw new Error("Academic term already exists");
     }
 
     const academicTermCreated = await AcademicTerm.create({
@@ -43,7 +43,7 @@ exports.getAcademicTerms = AsyncHandler(async (req, res) => {
     const academicTerms = await AcademicTerm.find();
     res.status(200).json({
         status: 'Success',
-        message: "Academic years fetched successfully",
+        message: "Academic term fetched successfully",
         data : academicTerms
     });
 });
@@ -58,7 +58,7 @@ exports.getAcademicTerm = AsyncHandler(async (req, res) => {
     const academicTerms = await AcademicTerm.findById(req.params.id);
     res.status(200).json({
         status: 'Success',
-        message: "Academic year fetched successfully",
+        message: "Academic term fetched successfully",
         data : academicTerms
     });
 });
@@ -73,7 +73,7 @@ exports.updateAcademicTerm = AsyncHandler(async (req, res) => {
     const {name, description, duration}  = req.body;
     const createAcademicTermFound = await AcademicTerm.findOne({name})
     if(createAcademicTermFound){
-        throw new Error("Academic year already exists.")
+        throw new Error("Academic term already exists.")
     }
     const academicTerms = await AcademicTerm.findByIdAndUpdate(req.params.id, 
     {
