@@ -22,6 +22,11 @@ const adminSchema = new mongoose.Schema(
       ref: "AcademicTerm",
     }],
 
+    programs:[{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Program",
+    }],
+
     academicYears:[{
       type: mongoose.Schema.Types.ObjectId,
       ref: "AcademicYear",
