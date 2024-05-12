@@ -98,7 +98,7 @@ exports.updateYearGroup = AsyncHandler(async (req, res) => {
 
 
 // @desc  DELETE Year Group
-// @route delete /api/v1/subjects/:id
+// @route delete /api/v1/year-groups/:id
 // @access Private
 exports.deleteYearGroup = AsyncHandler(async (req, res) => {
     await YearGroup.findByIdAndDelete(req.params.id)
