@@ -8,6 +8,7 @@ const programRouter = require("../routes/academics/program");
 const adminRouter = require("../routes/staff/adminRouter");
 const subjectRouter = require("../routes/academics/subject");
 const yearGroupRouter = require("../routes/academics/yearGroup");
+const teacherRouter = require("../routes/staff/teachers");
 
 
 
@@ -30,6 +31,7 @@ app.use('/api/v1/class-levels', classLevelRouter);
 app.use('/api/v1/programs', programRouter);
 app.use('/api/v1/subjects', subjectRouter);
 app.use('/api/v1/year-groups', yearGroupRouter);
+app.use('/api/v1/teachers', teacherRouter);
 
 // ** -- Error Middlewares --
 app.use(notFoundErr)
