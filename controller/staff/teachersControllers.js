@@ -2,6 +2,7 @@ const AsyncHandler = require("express-async-handler"); //
 const Admin = require("../../model/Staff/Admin");
 const Teacher = require("../../model/Staff/Teacher");
 const { hashPassword, isPassMatched } = require("../../utils/helpers");
+const generateToken = require("../../utils/generateToken");
 
 // @desc Admin Register Teacher
 // @route POST /api/v1/teachers/admin/register
@@ -35,3 +36,31 @@ exports.adminRegisterTeacher = AsyncHandler(async (req, res) => {
 
 
 });
+
+
+
+
+// @desc Login teacher
+// @route POST /api/v1/teachers/login
+// @access Private
+
+exports.loginTeacher = AsyncHandler(async (req, res) => {
+    const {email, password}  = req.body
+    // find user
+    const teacher = await Teacher.findOne({email});
+    if(!teacher){
+        return res.json({message : "Invalid login credentials"});
+    };
+
+    // Verify password
+    const isMatched = await isPassMatched(password, teacher?.password);
+    if(!isMatched){
+        return res.json({message : "Invalid login credentials"});
+    } else{
+        res.status(200).json({
+            status: "success",
+            message: "Teacher logged in successfully",
+            data: generateToken(teacher?._id),
+        })
+    }
+})
