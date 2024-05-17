@@ -11,6 +11,7 @@ const isLogin = async (req, res, next)=> {
         // find the admin
         const user = await Admin.findById(
             verifiedToken.id
+            ///  It specifies that only the name, email, and role fields of the retrieved admin user should be included in the result assigned to the user constant.
         ).select('name email role');
         // save the user into the req.obj
         
