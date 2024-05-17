@@ -97,3 +97,21 @@ exports.getTeacherByAdmin = AsyncHandler(async (req, res) => {
             data: teacher
     })
 })
+
+
+
+// @desc Teacher profile
+// @route GET /api/v1/teachers/profile
+// @access Private Teacher only
+
+exports.getTeacherProfile = AsyncHandler(async (req, res) => {
+    const teacher = await Teacher.findById(req.userAuth?._id).select('-password -createdAt -updatedAt');
+    if(!teacher){
+        throw new Error("Teacher not found!")
+    }
+        res.status(200).json({
+            status: "success",
+            message: "Teacher Profile fetched successfully",
+            data: teacher
+    })
+})
