@@ -79,3 +79,21 @@ exports.getAllTeachersAdmin = AsyncHandler(async (req, res) => {
             data: teachers
     })
 })
+
+
+// @desc Get single teacher
+// @route GET /api/v1/teachers/:teacherID/admin
+// @access Private admin only
+
+exports.getTeacherByAdmin = AsyncHandler(async (req, res) => {
+    const teacherID = req.params.teacherID;
+    const teacher = await Teacher.findById(teacherID);
+    if(!teacher){
+        throw new Error("Teacher not found!")
+    }
+        res.status(200).json({
+            status: "success",
+            message: "Teacher fetched successfully",
+            data: teacher
+    })
+})
