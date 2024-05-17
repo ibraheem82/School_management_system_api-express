@@ -9,6 +9,8 @@ const adminRouter = require("../routes/staff/adminRouter");
 const subjectRouter = require("../routes/academics/subject");
 const yearGroupRouter = require("../routes/academics/yearGroup");
 const teacherRouter = require("../routes/staff/teachers");
+const performanceMW = require("../middlewares/performanceLoggingMiddleware");
+// const morgan = require("morgan");
 
 
 
@@ -18,6 +20,7 @@ const app = express();
 
 // ----- MIDDLEWARES -----
 // app.use(morgan('dev'));
+app.use(performanceMW)
 app.use(express.json()); // This allows the application to parse incoming JSON data in request bodies.
 
 
