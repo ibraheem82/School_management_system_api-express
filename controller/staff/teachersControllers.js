@@ -111,7 +111,7 @@ exports.getTeacherProfile = AsyncHandler(async (req, res) => {
     }
         res.status(200).json({
             status: "success",
-            message: "Teacher Profile fetched successfully",
+            message: "Teacher's Profile fetched successfully",
             data: teacher
     })
 })
