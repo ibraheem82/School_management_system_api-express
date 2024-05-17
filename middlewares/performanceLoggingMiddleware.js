@@ -2,6 +2,7 @@ const performanceMW = (req, res, next) => {
     // This line captures the current timestamp at the beginning of the request processing using Date.now(). This timestamp will be used later to calculate the processing time.
     const start = Date.now();
   
+    // This line calls the next function. This is essential in middleware because it allows the request to continue through the middleware stack and eventually reach the appropriate route handler that will generate the response.
     next();
   
 
