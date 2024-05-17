@@ -64,3 +64,18 @@ exports.loginTeacher = AsyncHandler(async (req, res) => {
         })
     }
 })
+
+
+
+// @desc Get all teachers
+// @route GET /api/v1/admin/teachers
+// @access Private admin only
+
+exports.getAllTeachersAdmin = AsyncHandler(async (req, res) => {
+    const teachers = await Teacher.find();
+        res.status(200).json({
+            status: "success",
+            message: "Teachers fetched successfully",
+            data: teachers
+    })
+})
