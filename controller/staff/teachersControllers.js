@@ -115,3 +115,53 @@ exports.getTeacherProfile = AsyncHandler(async (req, res) => {
             data: teacher
     })
 })
+
+
+// @desc   TEACHER UPDATING PROFILE
+// @route UPDATE /api/v1/teachers/:id/update
+// @access Private TEACHER ONLY
+exports.teacherUpdateProfile = AsyncHandler( async (req, res) => {
+    const {email, name, password} = req.body;
+    // * If email is taken
+    const emailExist = await Teacher.findOne({email})
+    if(emailExist){
+        throw new Error('This email is taken/exist');
+    }
+
+   
+
+    // ** Check if the user is updating password
+    if(password){
+        // Update()
+        const teacher  = await Teacher.findByIdAndUpdate(req.userAuth._id, {
+            email,
+            password : await hashPassword(password),
+            name,
+        },{
+            new:true,
+            runValidators : true,
+        });
+
+        res.status(200).json({
+            status: 'success ✅',
+            data : teacher,
+            message: "Teacher updated successfully.",
+        });
+    } else{
+        // Update()
+        const teacher  = await Teacher.findByIdAndUpdate(req.userAuth._id, {
+            email,
+            name,
+        },{
+            new:true,
+            runValidators : true,
+        });
+
+        res.status(200).json({
+            status: 'success ✅',
+            data : teacher,
+            message: "Teacher updated successfully.",
+        });
+    }
+    
+});
