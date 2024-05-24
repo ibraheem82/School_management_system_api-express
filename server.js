@@ -11,4 +11,4 @@ const PORT = process.env.PORT || 2024;
 
 // ** SERVER
 const server = http.createServer(app) //It takes the application logic (app) as an argument, which will be used to handle incoming requests and generate responses.
-server.listen(PORT, console.log(`System Sever running is on port ${PORT}`)); //  This line starts the server, listening for incoming requests on the specified port (PORT). It also provides a callback function that executes when the server starts successfully.
+server.listen(PORT, console.log(`System Server running is on port ${PORT}`)); //  This line starts the server, listening for incoming requests on the specified port (PORT). It also provides a callback function that executes when the server starts successfully.

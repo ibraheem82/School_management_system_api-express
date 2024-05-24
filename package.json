@@ -174,7 +174,7 @@
     "yallist": "^4.0.0"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "node --watch server.js",
     "server": "nodemon server.js"
   },
   "keywords": [
