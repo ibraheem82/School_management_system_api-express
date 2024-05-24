@@ -1,5 +1,5 @@
 const express = require("express");
-const { createExam, getExams, getExam } = require("../../controller/academics/examsCtrl");
+const { createExam, getExams, getExam, updateExam } = require("../../controller/academics/examsCtrl");
 const isTeacher = require("../../middlewares/isteacher");
 const isTeacherLogin = require("../../middlewares/isTeacherLogin");
 
@@ -9,15 +9,15 @@ const examRouter = express.Router();
 
 
 examRouter
-    .route("/", isTeacherLogin, isTeacher)
-    .post(createExam)
-    .get(getExams)
+    .route("/")
+    .post(isTeacherLogin, isTeacher, createExam)
+    .get(isTeacherLogin, isTeacher, getExams)
 
 
 examRouter
-    .route("/:id", isTeacherLogin, isTeacher)
-    .get(getExam)
-    // .put(isLogin, isAdmin, updateClassLevel)
+    .route("/:id")
+    .get(isTeacherLogin, isTeacher, getExam)
+    .put(isTeacherLogin, isTeacher, updateExam)
     // .delete(isLogin, isAdmin, deleteClassLevel)
 
 
