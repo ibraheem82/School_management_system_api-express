@@ -47,7 +47,7 @@ const examSchema = new Schema(
     examDate: {
       type: Date,
       required: true,
-      // default: new Date(),
+      default: new Date(),
     },
     examTime: {
       type: String,
