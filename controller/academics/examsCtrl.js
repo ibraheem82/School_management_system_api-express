@@ -10,7 +10,7 @@ const Teacher = require("../../model/Staff/Teacher");
 // @access Private Teachers only
 
 exports.createExam = AsyncHandler(async(req, res) => {
-    const {name, description, subject, program, academicTerm, duration, examDate, examTime, examType, createdBy, academicYear} = req.body;
+    const {name, description, subject, program, academicTerm, duration, examDate, examTime, examType, createdBy, academicYear, classLevel} = req.body;
 
     // Find teacher
 
@@ -30,15 +30,15 @@ exports.createExam = AsyncHandler(async(req, res) => {
         name,
         description,
         academicTerm,
+        academicYear,
+        classLevel,
         duration,
          examDate,
          examTime, 
          examType,
-          createdBy : req.userAuth?._id,
-           academicYear,
-           subject,
-            program,
-
+         subject,
+         program,
+         createdBy : req.userAuth?._id,
     });
 
     // push exam into teacher
