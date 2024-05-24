@@ -82,3 +82,30 @@ exports.getExam = AsyncHandler(async (req, res) => {
     });
 });
 
+
+// @desc  UPDATE Exam
+// @route PUT /api/v1/exams/:id
+// @access Private teacher only
+exports.updateExam = AsyncHandler(async (req, res) => {
+
+    const {name, description, subject, program, academicTerm, duration, examDate, examTime, examType, createdBy, academicYear, classLevel} = req.body;
+    const examFound = await Exam.findOne({name})
+    if(examFound){
+        throw new Error("Exam already exists.")
+    }
+    const examUpdated  = await Exam.findByIdAndUpdate(req.params.id, 
+    {
+        name, description, subject, program, academicTerm, duration, examDate, examTime, examType, createdBy, academicYear, classLevel,
+        createdBy: req.userAuth._id
+    },
+    {
+        new: true
+    }
+    );
+    res.status(200).json({
+        status: 'Success ✅',
+        message: "Exam updated successfully",
+        data : examUpdated
+    });
+});
+
