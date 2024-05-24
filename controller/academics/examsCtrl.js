@@ -34,7 +34,7 @@ exports.createExam = AsyncHandler(async(req, res) => {
          examDate,
          examTime, 
          examType,
-          createdBy,
+          createdBy : req.userAuth?._id,
            academicYear,
            subject,
             program,
