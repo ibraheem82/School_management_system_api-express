@@ -68,3 +68,17 @@ exports.getExams = AsyncHandler(async (req, res) => {
     });
 });
 
+
+
+// @desc  Get single Exam
+// @route GET  /api/v1/exams/:id
+// @access Private Teachers only
+exports.getExam = AsyncHandler(async (req, res) => {
+    const exam = await Exam.findById(req.params.id);
+    res.status(200).json({
+        status: 'Success',
+        message: "Exam fetched successfully",
+        data : exam
+    });
+});
+
