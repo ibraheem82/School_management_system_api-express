@@ -118,7 +118,7 @@ exports.getTeacherProfile = AsyncHandler(async (req, res) => {
 
 
 // @desc   TEACHER UPDATING PROFILE
-// @route UPDATE /api/v1/teachers/:id/update
+// @route UPDATE /api/v1/teachers/:teacherID/update
 // @access Private TEACHER ONLY
 exports.teacherUpdateProfile = AsyncHandler( async (req, res) => {
     const {email, name, password} = req.body;
@@ -163,5 +163,75 @@ exports.teacherUpdateProfile = AsyncHandler( async (req, res) => {
             message: "Teacher updated successfully.",
         });
     }
+    
+});
+
+
+
+
+// @desc   Admin UPDATING  Teacher PROFILE
+// @route UPDATE /api/v1/teachers/:teacherID/admin
+// @access Private Admin ONLY
+exports.adminUpdateTeacher = AsyncHandler( async (req, res) => {
+    const {program, classLevel, academicYear, subject} = req.body;
+    const teacherFound = await Teacher.findById(req.params.teacherID)
+    if(!teacherFound){
+        throw new Error('Teacher not found...');
+    }
+
+    // Check if teacher is withdraw
+
+        if(teacherFound.isWitdrawn){
+            throw new Error("Action denied, teacher is withdraw")
+        }
+
+
+    // * Assign a program
+    if(program){
+        teacherFound.program = program
+        await teacherFound.save();
+        res.status(200).json({
+            status: 'success ✅',
+            data : teacherFound,
+            message: "Teacher updated successfully.",
+        });
+    }
+
+
+
+    // Assign class level
+    if(classLevel){
+        teacherFound.classLevel = classLevel
+        await teacherFound.save()
+        res.status(200).json({
+            status: 'success ✅',
+            data : teacherFound,
+            message: "Teacher updated successfully.",
+        });
+    }
+
+     // Assign Academic year
+     if(academicYear){
+        teacherFound.academicYear = academicYear
+        await teacherFound.save()
+        res.status(200).json({
+            status: 'success ✅',
+            data : teacherFound,
+            message: "Teacher updated successfully.",
+        });
+    }
+
+     // Assign Subject
+     if(subject){
+        teacherFound.subject = subject
+        await teacherFound.save()
+        res.status(200).json({
+            status: 'success ✅',
+            data : teacherFound,
+            message: "Teacher updated successfully.",
+        });
+    }
+        
+
     
 });
