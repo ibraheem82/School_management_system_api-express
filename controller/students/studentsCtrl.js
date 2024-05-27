@@ -77,3 +77,18 @@ exports.getStudentProfile = AsyncHandler(async (req, res) => {
             data: student
     })
 })
+
+
+// @desc Get all students
+// @route GET /api/v1/admin/students
+// @access Private admin only
+
+exports.getAllStudentsByAdmin = AsyncHandler(async (req, res) => {
+    const students = await Student.find();
+        res.status(200).json({
+            status: "success",
+            message: "Students fetched successfully",
+            data: students
+    })
+})
+
