@@ -59,3 +59,21 @@ exports.loginStudent = AsyncHandler(async (req, res) => {
         })
     }
 })
+
+
+
+// @desc Student profile
+// @route GET /api/v1/students/profile
+// @access Private Student only
+
+exports.getStudentProfile = AsyncHandler(async (req, res) => {
+    const student = await Student.findById(req.userAuth?._id).select('-password -createdAt -updatedAt');
+    if(!student){
+        throw new Error("Student not found!")
+    }
+        res.status(200).json({
+            status: "success",
+            message: "Student's Profile fetched successfully",
+            data: student
+    })
+})
