@@ -89,8 +89,8 @@ exports.getAllStudentsByAdmin = AsyncHandler(async (req, res) => {
             status: "success",
             message: "Students fetched successfully",
             data: students
-    })
-})
+    });
+});
 
 
 
@@ -162,3 +162,44 @@ exports.studentUpdateProfile = AsyncHandler( async (req, res) => {
 });
 
 
+
+// @desc   Admin updating student e.g assigning classes...
+// @route UPDATE /api/v1/students/:studentID/update/admin
+// @access Private ADMIN ONLY
+
+exports.adminUpdateStudent = AsyncHandler( async (req, res) => {
+    const {classLevels, academicYear, program, name, email, prefectName} = req.body;
+    // * If email is taken
+    const studentFound = await Student.findById(req.params.studentID);
+    if(!studentFound){
+        throw new Error("Student not found")
+    }
+    // update
+    const studentUpdated = await Student.findByIdAndUpdate(req.params.studentID, {
+        // This operator is used to update existing fields in the student document.
+        $set:{
+            name,
+            email, 
+            academicYear,
+            program,
+            prefectName
+        },
+
+        
+        // $addToSet will put an element in an array, if the element exist it will not bother to add it, so in short it avoides duplications of documents.
+        // This operator is used to add elements to an array field.
+        $addToSet:{
+            classLevels
+        },
+
+
+    }, {
+        new:true,
+    });
+    
+    res.status(200).json({
+        status: "success",
+        message: "Student Updated successfully",
+        data: studentUpdated
+    });
+});
