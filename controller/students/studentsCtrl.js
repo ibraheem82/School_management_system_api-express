@@ -112,3 +112,53 @@ exports.getStudentByAdmin = AsyncHandler(async (req, res) => {
     })
 })
 
+
+
+// @desc   Student UPDATING PROFILE
+// @route UPDATE /api/v1/students/update
+// @access Private STUDENT ONLY
+exports.studentUpdateProfile = AsyncHandler( async (req, res) => {
+    const {email, password} = req.body;
+    // * If email is taken
+    const emailExist = await Student.findOne({email})
+    if(emailExist){
+        throw new Error('This email is taken/exist');
+    }
+
+   
+
+    // ** Check if the user is updating password
+    if(password){
+        // Update()
+        const student  = await Student.findByIdAndUpdate(req.userAuth._id, {
+            email,
+            password : await hashPassword(password),
+        },{
+            new:true,
+            runValidators : true,
+        });
+
+        res.status(200).json({
+            status: 'success ✅',
+            data : student,
+            message: "Student updated successfully.",
+        });
+    } else{
+        // Update()
+        const student  = await Student.findByIdAndUpdate(req.userAuth._id, {
+            email,
+        },{
+            new:true,
+            runValidators : true,
+        });
+
+        res.status(200).json({
+            status: 'success ✅',
+            data : student,
+            message: "Student updated successfully.",
+        });
+    }
+    
+});
+
+
