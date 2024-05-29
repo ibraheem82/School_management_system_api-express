@@ -42,6 +42,9 @@ const studentSchema = new mongoose.Schema(
         ref : "ClassLevel",
       },
     ],
+
+    // The function retrieves the classLevels property of the Student object which is an array containing the student's enrolled classes.
+// It then accesses the last element of the classLevels array using this.classLevels.length - 1.
     currentClassLevel: {
       type: String,
       default: function () {
