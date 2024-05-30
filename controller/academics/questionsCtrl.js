@@ -70,3 +70,34 @@ exports.getQuestion = AsyncHandler(async (req, res) => {
     });
 });
 
+
+
+
+// @desc  UPDATE Question
+// @route PUT /api/v1/questions/:id
+// @access Private Teacher Only
+exports.updateQuestion = AsyncHandler(async (req, res) => {
+
+    const {question, optionA, optionB, optionC, optionD, correctAnswer}  = req.body;
+
+    const questionFound = await Question.findOne({question})
+    if(questionFound){
+        throw new Error("Question already exists.")
+    }
+    const updatedQuestion = await Question.findByIdAndUpdate(req.params.id, 
+    {
+        question, optionA, optionB, optionC, optionD, correctAnswer,
+        createdBy: req.userAuth._id
+    },
+    {
+        new: true
+    }
+    );
+    res.status(200).json({
+        status: 'Success',
+        message: "Question updated successfully",
+        data : updatedQuestion
+    });
+});
+
+
