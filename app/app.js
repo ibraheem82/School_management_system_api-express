@@ -12,6 +12,7 @@ const teacherRouter = require("../routes/staff/teachers");
 const performanceMW = require("../middlewares/performanceLoggingMiddleware");
 const examRouter = require("../routes/academics/examRoutes");
 const studentRouter = require("../routes/staff/student");
+const questionsRouter = require("../routes/academics/questionRoutes");
 // const morgan = require("morgan");
 
 
@@ -39,6 +40,7 @@ app.use('/api/v1/year-groups', yearGroupRouter);
 app.use('/api/v1/teachers', teacherRouter);
 app.use('/api/v1/exams', examRouter);
 app.use('/api/v1/students', studentRouter);
+app.use('/api/v1/questions', questionsRouter);
 
 // ** -- Error Middlewares --
 app.use(notFoundErr)
