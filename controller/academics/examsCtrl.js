@@ -60,6 +60,9 @@ exports.createExam = AsyncHandler(async(req, res) => {
 // @route GET  /api/v1/exams
 // @access Private
 exports.getExams = AsyncHandler(async (req, res) => {
+    // This part uses population, a powerful feature in Mongoose. It fetches additional data related to the retrieved exams. Here, it populates the questions field within each exam object.
+// .populate({ path: 'createdBy' }): This nested populate fetches details about the user who created each question within the populated questions array.
+
     const exams = await Exam.find().populate({
         path: 'questions',
         populate:{
