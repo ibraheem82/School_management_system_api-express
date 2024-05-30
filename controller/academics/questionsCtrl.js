@@ -20,7 +20,13 @@ exports.createQuestion = AsyncHandler(async (req, res) => {
         throw new Error("Exam not found.")
     }
 
-    // 
+    // check if question
+    const questionExists = await Question.findOne({question})
+    if(questionExists){
+        throw new Error("Question already exists")
+    }
+
+
     const questionCreated = await Question.create({
         question, optionA, optionB, optionC, optionD, correctAnswer, createdBy: req.userAuth._id,
     });
