@@ -2,6 +2,7 @@ const AsyncHandler = require("express-async-handler");
 const Student = require("../../model/Academic/Student");
 const { hashPassword, isPassMatched } = require("../../utils/helpers");
 const generateToken = require("../../utils/generateToken");
+const Exam = require("../../model/Academic/Exam");
 
 
 
@@ -201,5 +202,32 @@ exports.adminUpdateStudent = AsyncHandler( async (req, res) => {
         status: "success",
         message: "Student Updated successfully",
         data: studentUpdated
+    });
+});
+
+
+// @desc  Student taking exams
+// @route POST /api/v1/students/exam/:examID/write
+// @access Private Student only
+exports.writeExam = AsyncHandler(async (req, res) => {
+
+    const studentFound = await Student.findById(req.userAuth?._id);
+    if(!studentFound){
+        throw new Error("Student not found")
+    }
+
+    // Get exam
+    const examFound = await Exam.findById(req.params.examID).populate("questions");
+
+    if(!examFound){
+        throw new Error("Exam not found")
+    }
+
+    const questions = examFound?.questions;
+    res.status(200).json({
+        status: "success",
+        message: "Exam Found",
+        // data: examFound
+        data: questions
     });
 });
