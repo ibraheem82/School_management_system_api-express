@@ -224,10 +224,38 @@ exports.writeExam = AsyncHandler(async (req, res) => {
     }
 
     const questions = examFound?.questions;
+
+    const studentAnswers = req.body.answers;
+
+    // * Building reports
+    let correctanswers = 0;
+    let wrongAnswers = 0;
+    let totalQuestions = 0;
+    let grade = 0;
+    let score = 0;
+    let answeredQuestions = [];
+
+    // * Check for answers
+    for(let i  = 0; i < questions.length; i++){
+        // * find the question
+        const question = questions[i];
+        console.log(question);
+
+        // * check if answer is correct.
+        if(question.correctAnswer === studentAnswers[i]){
+            correctanswers++;
+            score++;
+            question.isCorrect = true;
+
+        } else {
+            wrongAnswers++;
+        }
+    }
     res.status(200).json({
         status: "success",
-        message: "Exam Found",
-        // data: examFound
-        data: questions
+        correctanswers,
+        wrongAnswers,
+        score,
+        questions
     });
 });
