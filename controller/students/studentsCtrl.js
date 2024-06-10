@@ -217,6 +217,7 @@ exports.writeExam = AsyncHandler(async (req, res) => {
     }
 
     // Get exam
+    // It will get all question associated with that particular exam you are looking for.
     const examFound = await Exam.findById(req.params.examID).populate("questions");
 
     if(!examFound){
@@ -226,6 +227,10 @@ exports.writeExam = AsyncHandler(async (req, res) => {
     const questions = examFound?.questions;
 
     const studentAnswers = req.body.answers;
+
+    if(studentAnswers.length !== questions.length){
+        throw new Error ("You have not answered all the questions.")
+    }
 
     // * Building reports
     let correctanswers = 0;
