@@ -7,6 +7,7 @@ const { hashPassword, isPassMatched } = require("../../utils/helpers");
 // @access Private
 
 // It's wrapped in AsyncHandler to handle potential asynchronous errors within the function.
+// hello
 exports.registerAdminCtrl = AsyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
         // Check if email exists
