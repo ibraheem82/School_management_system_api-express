@@ -69,7 +69,7 @@ exports.getAdminsCtrl = AsyncHandler( async (req, res) => {
   const admins = await Admin.find().select('-password -createdAt -updatedAt').populate("academicYears");
   res.status(200).json({
     status: 'success ✅',
-    message: 'Admin fetched successfully',
+    message: 'Admins fetched successfully',
     data: admins
   });
 });
