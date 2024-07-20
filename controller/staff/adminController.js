@@ -121,7 +121,7 @@ exports.updateAdminCtrl = AsyncHandler( async (req, res) => {
         res.status(200).json({
             status: 'success ✅',
             data : admin,
-            message: "Admin updated successfully.",
+            message: "Admin's profile updated successfully.",
         });
     } else{
         // Update()
@@ -136,7 +136,7 @@ exports.updateAdminCtrl = AsyncHandler( async (req, res) => {
         res.status(200).json({
             status: 'success ✅',
             data : admin,
-            message: "Admin updated successfully.",
+            message: "Admin profile updated successfully.",
         });
     }
     
