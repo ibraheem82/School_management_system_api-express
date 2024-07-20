@@ -66,7 +66,7 @@ exports.loginAdminCtrl =  AsyncHandler(async (req, res) => {
 // @route GET /api/v1/admins/
 // @access Private
 exports.getAdminsCtrl = AsyncHandler( async (req, res) => {
-  const admins = await Admin.find();
+  const admins = await Admin.find().select('-password -createdAt -updatedAt').populate("academicYears");
   res.status(200).json({
     status: 'success ✅',
     message: 'Admin fetched successfully',
