@@ -87,7 +87,7 @@ exports.getAllTeachersAdmin = AsyncHandler(async (req, res) => {
 
 exports.getTeacherByAdmin = AsyncHandler(async (req, res) => {
     const teacherID = req.params.teacherID;
-    const teacher = await Teacher.findById(teacherID);
+    const teacher = await Teacher.findById(teacherID).select('-password -createdAt -updatedAt');
     if(!teacher){
         throw new Error("Teacher not found!")
     }
