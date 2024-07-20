@@ -97,7 +97,11 @@ exports.updateProgram = AsyncHandler(async (req, res) => {
 // @route delete /api/v1/programs/:id
 // @access Private
 exports.deleteProgram = AsyncHandler(async (req, res) => {
-    await Program.findByIdAndDelete(req.params.id)
+    const program = await Program.findByIdAndDelete(req.params.id)
+
+    if (!program) {
+        throw new Error("Program does'nt exists / already deleted.");
+    }
     
     res.status(200).json({
         status: 'Success',
