@@ -72,7 +72,7 @@ exports.loginTeacher = AsyncHandler(async (req, res) => {
 // @access Private admin only
 
 exports.getAllTeachersAdmin = AsyncHandler(async (req, res) => {
-    const teachers = await Teacher.find();
+    const teachers = await Teacher.find().select('-password -createdAt -updatedAt');
         res.status(200).json({
             status: "success",
             message: "Teachers fetched successfully",
