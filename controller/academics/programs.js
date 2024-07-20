@@ -68,7 +68,7 @@ exports.getProgram = AsyncHandler(async (req, res) => {
 // @access Private
 exports.updateProgram = AsyncHandler(async (req, res) => {
 
-    const {name, description}  = req.body;
+    const {name, description, duration}  = req.body;
     const programFound = await Program.findOne({name})
     if(programFound){
         throw new Error("Program already exists.")
@@ -77,6 +77,7 @@ exports.updateProgram = AsyncHandler(async (req, res) => {
     {
         name,
         description,
+        duration,
         createdBy: req.userAuth._id
     },
     {
