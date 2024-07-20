@@ -68,7 +68,7 @@ exports.loginTeacher = AsyncHandler(async (req, res) => {
 
 
 // @desc Get all teachers
-// @route GET /api/v1/admin/teachers
+// @route GET /api/v1/teachers/admin
 // @access Private admin only
 
 exports.getAllTeachersAdmin = AsyncHandler(async (req, res) => {
