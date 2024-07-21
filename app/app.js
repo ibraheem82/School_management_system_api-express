@@ -20,9 +20,15 @@ const questionsRouter = require("../routes/academics/questionRoutes");
 
 
 const app = express();
+const path = require('path');
+
+
+
 
 // ----- MIDDLEWARES -----
 // app.use(morgan('dev'));
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'templates'));
 app.use(performanceMW)
 app.use(express.json()); // This allows the application to parse incoming JSON data in request bodies.
 
