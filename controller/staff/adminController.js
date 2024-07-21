@@ -10,23 +10,84 @@ const { hashPassword, isPassMatched } = require("../../utils/helpers");
 // It's wrapped in AsyncHandler to handle potential asynchronous errors within the function.
 exports.registerAdminCtrl = AsyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
-        // Check if email exists
-        const adminFound = await Admin.findOne({email});
-        if(adminFound){
-            throw new Error('Admin exists.');
-        }
 
-        // * Register
-        const user = await Admin.create({
-            name,
-            email,
-            password : await hashPassword(password),
-        });
+    // Check if email exists
+    const adminFound = await Admin.findOne({ email });
+    if (adminFound) {
+        throw new Error('Admin exists.');
+    }
+
+    // Create user object but do not save yet
+    const user = new Admin({
+        name,
+        email,
+        password: await hashPassword(password),
+    });
+
+    try {
+        // Send email
+        await emailManager(user.email, "Thanks for registering with us",
+            `<!DOCTYPE html>
+            <html lang="en">
+            <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Welcome Grokker School</title>
+              <style>
+                body {
+                  font-family: Arial, sans-serif;
+                  margin: 0;
+                  padding: 0;
+                }
+                table {
+                  width: 100%;
+                  max-width: 600px; /* Optional: Set a maximum width for better responsiveness */
+                  margin: 20px auto; /* Center the table horizontally */
+                }
+                h1 {
+                  color: #333333;
+                  text-align: center;
+                }
+                b {
+                  color: #333333;
+                }
+                p {
+                  color: #666666;
+                  font-size: 16px;
+                  text-align: center;
+                  padding: 10px 0; /* Add some padding for better readability */
+                }
+              </style>
+            </head>
+            <body>
+              <table>
+                <tr>
+                  <td style="background-color: #f7f7f7; padding: 20px;">
+                    <h1>Welcome to Grokker School By Astro</h1>
+                    <b>Hi ${user.name}</b>
+                    <p>We hope you can manage your expenses easily from our platform.</p>
+                  </td>
+                </tr>
+              </table>
+            </body>
+            </html>`
+        );
+
+        // Save user to database only if email is sent successfully
+        await user.save();
+
         res.status(201).json({
             status: 'success ✅',
-            data : user,
-            Message: "Admin registered successfully",
+            data: user,
+            message: "Admin registered successfully",
         });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            status: 'error ❌',
+            message: 'Failed to register admin. Please try again later.',
+        });
+    }
 });
 
 
