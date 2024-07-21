@@ -1,3 +1,6 @@
+const path = require('path');
+const ejs = require('ejs');
+
 const AsyncHandler = require("express-async-handler"); //  package. This middleware helps handle asynchronous errors in Express routes more cleanly
 const emailManager = require("../../utils/emailManager");
 const Admin = require("../../model/Staff/Admin");
@@ -25,53 +28,11 @@ exports.registerAdminCtrl = AsyncHandler(async (req, res) => {
     });
 
     try {
+        // Render the email template
+        const emailTemplate = await ejs.renderFile(path.join(__dirname, '../../templates', 'welcomeEmail.ejs'), { name: user.name });
+
         // Send email
-        await emailManager(user.email, "Thanks for registering with us",
-            `<!DOCTYPE html>
-            <html lang="en">
-            <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>Welcome Grokker School</title>
-              <style>
-                body {
-                  font-family: Arial, sans-serif;
-                  margin: 0;
-                  padding: 0;
-                }
-                table {
-                  width: 100%;
-                  max-width: 600px; /* Optional: Set a maximum width for better responsiveness */
-                  margin: 20px auto; /* Center the table horizontally */
-                }
-                h1 {
-                  color: #333333;
-                  text-align: center;
-                }
-                b {
-                  color: #333333;
-                }
-                p {
-                  color: #666666;
-                  font-size: 16px;
-                  text-align: center;
-                  padding: 10px 0; /* Add some padding for better readability */
-                }
-              </style>
-            </head>
-            <body>
-              <table>
-                <tr>
-                  <td style="background-color: #f7f7f7; padding: 20px;">
-                    <h1>Welcome to Grokker School By Astro</h1>
-                    <b>Hi ${user.name}</b>
-                    <p>We hope you can manage your expenses easily from our platform.</p>
-                  </td>
-                </tr>
-              </table>
-            </body>
-            </html>`
-        );
+        await emailManager(user.email, "Thanks for registering with us", emailTemplate);
 
         // Save user to database only if email is sent successfully
         await user.save();
