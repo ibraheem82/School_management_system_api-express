@@ -1,4 +1,7 @@
 const express = require("express");
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
 const {globalErrHandler, notFoundErr} = require("../middlewares/globalErrHandler");
 // const morgan = require("morgan");
 const academicYearRouter = require("../routes/academics/academicYear");
@@ -32,6 +35,27 @@ app.set('views', path.join(__dirname, 'templates'));
 app.use(performanceMW)
 app.use(express.json()); // This allows the application to parse incoming JSON data in request bodies.
 
+const options = {
+    swaggerDefinition: {
+      openapi: '3.0.0',
+      info: {
+        title: 'Your API',
+        version: '1.0.0',
+        description: 'Your API Description'
+      },
+      servers: [
+        {
+          url: 'http://127.0.0.1:2024',
+          description: 'Local server'
+        }
+      ]
+    },
+    apis: ['../routes/staff/*.js', '../controller/staff/*.js']
+  };
+  
+  const swaggerSpec = swaggerJSDoc(options);
+  
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // ** Routes ** //
 
