@@ -11,6 +11,65 @@ const { hashPassword, isPassMatched } = require("../../utils/helpers");
 // @access Private
 
 // It's wrapped in AsyncHandler to handle potential asynchronous errors within the function.
+/**
+ * @swagger
+ * /register-admin:
+ *   post:
+ *     summary: Register a new admin
+ *     tags: [Admin]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: John Doe
+ *               email:
+ *                 type: string
+ *                 example: john.doe@example.com
+ *               password:
+ *                 type: string
+ *                 example: Password123!
+ *     responses:
+ *       201:
+ *         description: Admin registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success ✅
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     name:
+ *                       type: string
+ *                       example: John Doe
+ *                     email:
+ *                       type: string
+ *                       example: john.doe@example.com
+ *                 message:
+ *                   type: string
+ *                   example: Admin registered successfully
+ *       500:
+ *         description: Failed to register admin
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error ❌
+ *                 message:
+ *                   type: string
+ *                   example: Failed to register admin. Please try again later.
+ */
 exports.registerAdminCtrl = AsyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
 
